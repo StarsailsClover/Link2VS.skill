@@ -1,11 +1,11 @@
 {
   "name": "link2vs",
-  "version": "3.1.0",
-  "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol (UniversalVSMCP). Native .NET runtime with MCP Registry integration for one-click installation.",
+  "version": "26.0.0",
+  "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol (UniversalVSMCP). Native .NET runtime with unified installation and diagnostic tools.",
   "author": "StarsailsClover",
   "license": "MIT",
   "repository": "https://github.com/StarsailsClover/Link2VS.skill",
-  "tags": ["visual-studio", "mcp", "ide", "automation", "dotnet", "csharp", "vs2026", "mcp-registry", "ai-agent"],
+  "tags": ["visual-studio", "mcp", "ide", "automation", "dotnet", "csharp", "vs2026", "ai-agent"],
   "entry_point": "uvm_bridge",
   "capabilities": [
     "read_vs_solution",
@@ -13,13 +13,21 @@
     "debug_control",
     "file_operations",
     "project_management",
-    "mcp_registry_install"
+    "create_workspace",
+    "diagnostic_tools"
   ],
   "mcp_config": {
     "preferred_runtime": "dotnet",
-    "description": "Configuration for AI Agent to connect to VS via UniversalVSMCP. The .NET native version supports MCP Registry discovery in VS 2026.",
+    "description": "Configuration for AI Agent to connect to VS via UniversalVSMCP. Single installation method via NuGet.",
+    "single_install_method": {
+      "method": "nuget",
+      "command": "dotnet tool install -g UniversalVSMCP",
+      "run_command": "universal-vsmcp --stdio",
+      "verify_command": "universal-vsmcp --help",
+      "nuget_url": "https://www.nuget.org/packages/UniversalVSMCP/"
+    },
     "configs": {
-      "dotnet_tool": {
+      "dotnet_tool_stdio": {
         "runtime": "dotnet",
         "transport": "stdio",
         "command": "dotnet",
@@ -34,9 +42,26 @@
         "env": {
           "VS_AUTO_DETECT": "true"
         },
-        "description": "Run as installed global .NET tool (recommended)"
+        "description": "Primary configuration: NuGet global tool with stdio transport"
       },
-      "dotnet_run": {
+      "localhost_dev": {
+        "runtime": "dotnet",
+        "transport": "stdio",
+        "command": "dotnet",
+        "args": [
+          "run",
+          "--project",
+          "${workspaceFolder}",
+          "--",
+          "--stdio"
+        ],
+        "env": {
+          "VS_AUTO_DETECT": "true"
+        },
+        "url": "http://localhost:6277/sse",
+        "description": "Local development configuration with localhost URL"
+      },
+      "source_install": {
         "runtime": "dotnet",
         "transport": "stdio",
         "command": "dotnet",
@@ -50,79 +75,51 @@
         "env": {
           "VS_AUTO_DETECT": "true"
         },
-        "description": "Run directly from source (for development)"
-      },
-      "sse_transport": {
-        "runtime": "dotnet",
-        "transport": "sse",
-        "command": "dotnet",
-        "args": [
-          "run",
-          "--project",
-          "C:\\path\\to\\UniversalVSMCP\\src\\UniversalVSMCP\\UniversalVSMCP.csproj",
-          "--",
-          "--sse",
-          "--port",
-          "6277"
-        ],
-        "description": "Run with SSE transport for web-based clients"
+        "description": "Source install for development (use nuget method instead)"
       }
     },
-    "vs2026_registry_install": {
-      "description": "One-click installation via VS 2026 MCP Registry (requires server.json in repo root)",
-      "note": "VS 2026 MCP Registry feature may require restart. If no response after adding registry URL, restart VS and check Tools > Options > Environment > Extensions > MCP Server List.",
-      "steps": [
+    "vs2026_config": {
+      "description": "VS 2026 configuration",
+      "gui_steps": [
         "1. Open Visual Studio 2026",
         "2. Go to Tools > Options > Environment > Extensions",
-        "3. In MCP Registry section, click Add",
-        "4. Enter Name: 'UniversalVSMCP Official'",
-        "5. Enter URL: 'https://github.com/StarsailsClover/UniversalVSMCP'",
-        "6. VS scans server.json and shows 'universal-vsmcp'",
-        "7. Click Install - done!"
+        "3. Check 'Edit user settings as JSON'",
+        "4. Paste the mcpServers configuration from dotnet_tool_stdio",
+        "5. Save and restart VS if needed"
       ],
-      "troubleshooting": [
-        "If nothing happens after adding registry:",
-        "1. Restart Visual Studio 2026",
-        "2. Check MCP Server List tab for 'universal-vsmcp'",
-        "3. If still not visible, use Method B (Manual MCP Server) instead",
-        "4. Ensure server.json is at repository root (not in subfolder)"
-      ]
-    },
-    "vs2026_manual_config": {
-      "description": "Manual JSON configuration in VS 2026",
       "json_template": {
         "mcpServers": {
           "universal-vsmcp": {
             "command": "dotnet",
             "args": [
+              "tool",
               "run",
-              "--project",
-              "C:\\path\\to\\UniversalVSMCP\\src\\UniversalVSMCP\\UniversalVSMCP.csproj",
+              "--global",
+              "universal-vsmcp",
               "--",
               "--stdio"
             ],
-            "env": {
-              "VS_AUTO_DETECT": "true"
-            },
-            "transport": "stdio"
-          }
-        }
-      },
-      "gui_path": "Tools > Options > Environment > Extensions > Check 'Edit user settings as JSON'"
-    },
-    "claude_desktop_config": {
-      "description": "Configuration for Claude Desktop / Cursor / Cline",
-      "config": {
-        "mcpServers": {
-          "vsmcp": {
-            "command": "dotnet",
-            "args": ["run", "--project", "C:\\path\\to\\UniversalVSMCP\\src\\UniversalVSMCP\\UniversalVSMCP.csproj", "--", "--stdio"],
             "env": {
               "VS_AUTO_DETECT": "true"
             }
           }
         }
       }
+    },
+    "claude_desktop_config": {
+      "description": "Configuration for Claude Desktop / Cursor / Cline - uses dynamic path",
+      "config": {
+        "mcpServers": {
+          "vsmcp": {
+            "command": "dotnet",
+            "args": ["tool", "run", "--global", "universal-vsmcp", "--", "--stdio"],
+            "env": {
+              "VS_AUTO_DETECT": "true"
+            }
+          }
+        }
+      },
+      "note": "Path is relative to dotnet global tools folder, no hardcoded absolute paths"
     }
   },
   "skills": {
@@ -132,54 +129,56 @@
         "Visual Studio 2026 (18.0) or VS 2022 (17.14+)",
         "Windows 10 or later"
       ],
-      "current_method": "nuget_install",
+      "single_method": {
+        "name": "NuGet Global Tool",
+        "steps": [
+          "1. dotnet tool install -g UniversalVSMCP",
+          "2. universal-vsmcp --stdio",
+          "3. Verify: universal-vsmcp --help"
+        ]
+      },
       "commands": {
-        "install_global_tool": "dotnet tool install -g UniversalVSMCP",
-        "update_global_tool": "dotnet tool update -g UniversalVSMCP",
+        "install": "dotnet tool install -g UniversalVSMCP",
+        "update": "dotnet tool update -g UniversalVSMCP",
         "uninstall": "dotnet tool uninstall -g UniversalVSMCP",
-        "clone": "git clone https://github.com/StarsailsClover/UniversalVSMCP.git",
-        "build": "cd UniversalVSMCP/src/UniversalVSMCP && dotnet build",
-        "run_stdio": "dotnet run -- --stdio",
-        "run_sse": "dotnet run -- --sse --port 6277",
-        "run_with_log": "dotnet run -- --stdio --log-file uv.log"
+        "run": "universal-vsmcp --stdio",
+        "run_with_log": "universal-vsmcp --stdio --log-file uv.log",
+        "verify": "universal-vsmcp --help",
+        "list_tools": "dotnet tool list -g"
       }
     },
-    "registry_setup": {
-      "description": "How to register this MCP server for VS 2026 discovery",
-      "prerequisites": [
-        "GitHub repository must be public",
-        "server.json must exist at repository root",
-        "GitHub release must be created"
+    "diagnostics": {
+      "description": "Built-in diagnostic tools for troubleshooting",
+      "tools": [
+        "health_check - Verify server and VS connection",
+        "get_server_info - Get server capabilities",
+        "get_diagnostic_logs - Get recent log entries"
       ],
-      "steps": [
-        "1. Ensure server.json is at repository root",
-        "2. Create GitHub release: git tag -a v1.0.0 && git push origin v1.0.0",
-        "3. In VS 2026: Tools > Options > Environment > Extensions",
-        "4. Add registry: URL = https://github.com/StarsailsClover/UniversalVSMCP",
-        "5. VS scans and lists 'universal-vsmcp'",
-        "6. Click Install to add to MCP Server List"
-      ],
-      "note": "The MCP Registry feature in VS 2026 may be in preview. If it doesn't work, use the manual configuration method."
+      "commands": {
+        "check_connection": "Use health_check MCP tool",
+        "view_logs": "universal-vsmcp --stdio --log-file uv.log",
+        "check_vs": "Ensure VS is running with solution open"
+      }
     }
   },
   "metadata": {
     "mcp_registry_compatible": true,
     "server_json_spec": "https://github.com/docker/mcp-community-registry/blob/main/docs/reference/server-json/generic-server-json.md",
     "vs_compatibility": {
-      "vs2026": "18.0 (recommended)",
-      "vs2022": "17.14+ (limited support)"
+      "vs2026": "18.0 (primary)",
+      "vs2022": "17.14+ (secondary)"
     },
-    "nuget_package": "https://www.nuget.org/packages/UniversalVSMCP/ (not yet published)",
+    "nuget_package": {
+      "id": "UniversalVSMCP",
+      "version": "1.0.0",
+      "url": "https://www.nuget.org/packages/UniversalVSMCP/"
+    },
     "runtime": {
       "preferred": "dotnet",
       "supported": ["dotnet"]
     },
-    "known_issues": [
-      "SSE transport requires ASP.NET Core (added in v3.1.0)",
-      "MCP Registry discovery may require VS restart"
-    ],
-    "nuget_package_id": "UniversalVSMCP",
-    "nuget_package_version": "1.0.0",
-    "nuget_package_url": "https://www.nuget.org/packages/UniversalVSMCP/"
+    "tool_count": 30,
+    "transports": ["stdio", "sse"],
+    "localhost_support": true
   }
 }

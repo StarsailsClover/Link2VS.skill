@@ -4,20 +4,9 @@
 
 ---
 
-## 什么是 Link2VS？
+## 安装方式（单一推荐方式）
 
-Link2VS 是一个 AI Agent 技能，实现 AI 助手与 Visual Studio 的无缝集成：
-
-- **MCP Registry 一键安装** - 在 VS 2026 中直接安装
-- **28 个 MCP 工具** - 全面的 VS 自动化能力
-- **原生 .NET 运行时** - 无需 Python/Node.js 依赖
-- **双语文档** - 英文 + 中文
-
----
-
-## 安装方法
-
-### 方式一：NuGet 包（推荐）
+### NuGet 包（推荐）
 
 ```bash
 dotnet tool install -g UniversalVSMCP
@@ -29,21 +18,67 @@ dotnet tool install -g UniversalVSMCP
 universal-vsmcp --stdio
 ```
 
-NuGet：https://www.nuget.org/packages/UniversalVSMCP/
+验证：
 
-### 方式二：VS 2026 用户
+```bash
+universal-vsmcp --help
+```
 
-1. 打开 Visual Studio 2026
-2. **工具** -> **选项** -> **环境** -> **扩展**
-3. 在 **MCP Registry** 中点击 **添加**
-4. 输入：
-   - **名称**: `UniversalVSMCP Official`
-   - **URL**: `https://github.com/StarsailsClover/UniversalVSMCP`
-5. 选择 `universal-vsmcp` 并点击 **安装**
+**NuGet：** https://www.nuget.org/packages/UniversalVSMCP/
 
-### AI Agent 用户（Claude Desktop / Cursor）
+---
 
-添加到 `claude_desktop_config.json`：
+## 功能特性
+
+- **30 个 MCP 工具** 全面的 VS 自动化
+- **原生 .NET 运行时** 无需 Python/Node.js 依赖
+- **内置诊断工具** 便于故障排除
+- **Localhost 支持** 用于本地开发
+- **双语文档** 英文 + 中文
+
+---
+
+## VS 2026 配置
+
+### 方法 A：直接 JSON（推荐）
+
+1. 打开 **工具 → 选项 → 环境 → 扩展**
+2. 勾选 **"将用户设置编辑为 JSON"**
+3. 粘贴：
+
+```json
+{
+  "mcpServers": {
+    "universal-vsmcp": {
+      "command": "dotnet",
+      "args": [
+        "tool",
+        "run",
+        "--global",
+        "universal-vsmcp",
+        "--",
+        "--stdio"
+      ],
+      "env": {
+        "VS_AUTO_DETECT": "true"
+      }
+    }
+  }
+}
+```
+
+### 方法 B：GUI
+
+1. **工具 → 选项 → 环境 → 扩展**
+2. 在 **MCP 服务器列表** 点击 **添加**
+3. 填写：
+   - **名称**: `universal-vsmcp`
+   - **命令**: `dotnet`
+   - **参数**: `tool run --global universal-vsmcp -- --stdio`
+
+---
+
+## Claude Desktop / Cursor
 
 ```json
 {
@@ -61,20 +96,36 @@ NuGet：https://www.nuget.org/packages/UniversalVSMCP/
 
 ---
 
-## 功能特性
+## 诊断工具
 
-- **解决方案管理**: 列出项目、打开/关闭解决方案
-- **文件操作**: 读取、写入、搜索 VS 项目中的文件
-- **构建控制**: 构建、重新构建、清理解决方案和项目
-- **调试控制**: 启动/停止调试、单步执行代码
-- **项目管理**: 添加文件、设置启动项目、检查属性
+服务器包含内置诊断工具：
+
+| 工具 | 用途 |
+|------|------|
+| `health_check` | 验证服务器运行和 VS 连接 |
+| `get_server_info` | 获取服务器能力和工具列表 |
+| `get_diagnostic_logs` | 获取最近的日志条目 |
+
+### 故障排除
+
+```bash
+# 检查安装
+dotnet tool list -g
+
+# 带日志运行
+universal-vsmcp --stdio --log-file uv.log
+
+# 验证 VS 正在运行
+# health_check 工具将显示连接状态
+```
 
 ---
 
 ## 相关仓库
 
 - **Link2VS.skill**: https://github.com/StarsailsClover/Link2VS.skill
-- **配套服务器**: https://github.com/StarsailsClover/UniversalVSMCP
+- **服务器 (UVM)**: https://github.com/StarsailsClover/UniversalVSMCP
+- **NuGet**: https://www.nuget.org/packages/UniversalVSMCP/
 
 ---
 

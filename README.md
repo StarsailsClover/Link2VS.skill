@@ -4,23 +4,9 @@
 
 ---
 
-## What is Link2VS?
+## Installation (Single Method)
 
-Link2VS is an AI Agent skill that enables seamless integration between AI assistants and Visual Studio. It provides:
-
-- **Multiple installation methods** (Registry, Manual, Source)
-- **28 MCP tools** for comprehensive VS automation
-- **Native .NET runtime** (no Python/Node.js dependencies)
-- **Bilingual documentation** (English + Chinese)
-- **SSE and stdio transport** support
-
----
-
-## Installation
-
-### Method 1: NuGet Package (Recommended)
-
-Install the global .NET tool:
+### NuGet Package (Recommended)
 
 ```bash
 dotnet tool install -g UniversalVSMCP
@@ -32,52 +18,74 @@ Run:
 universal-vsmcp --stdio
 ```
 
-NuGet: https://www.nuget.org/packages/UniversalVSMCP/
+Verify:
 
-### Method 2: From Source
+```bash
+universal-vsmcp --help
+```
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/StarsailsClover/UniversalVSMCP.git
-   cd UniversalVSMCP/src/UniversalVSMCP
-   ```
+**NuGet:** https://www.nuget.org/packages/UniversalVSMCP/
 
-2. Build and run:
-   ```bash
-   dotnet build
-   dotnet run -- --stdio
-   ```
+---
 
-### Method 2: VS 2026 MCP Registry
+## Features
 
-1. Open Visual Studio 2026
-2. Go to **Tools -> Options -> Environment -> Extensions**
-3. In **MCP Registry**, click **Add**
-4. Enter:
-   - **Name**: `UniversalVSMCP Official`
-   - **URL**: `https://github.com/StarsailsClover/UniversalVSMCP`
-5. Select `universal-vsmcp` and click **Install**
+- **30 MCP Tools** for comprehensive VS automation
+- **Native .NET runtime** (no Python/Node.js dependencies)
+- **Built-in diagnostics** for troubleshooting
+- **Localhost support** for development
+- **Bilingual documentation** (English + Chinese)
 
-### Method 3: Manual MCP Server
+---
 
-1. **Tools -> Options -> Environment -> Extensions**
+## VS 2026 Configuration
+
+### Method A: Direct JSON (Recommended)
+
+1. Open **Tools → Options → Environment → Extensions**
+2. Check **"Edit user settings as JSON"**
+3. Paste:
+
+```json
+{
+  "mcpServers": {
+    "universal-vsmcp": {
+      "command": "dotnet",
+      "args": [
+        "tool",
+        "run",
+        "--global",
+        "universal-vsmcp",
+        "--",
+        "--stdio"
+      ],
+      "env": {
+        "VS_AUTO_DETECT": "true"
+      }
+    }
+  }
+}
+```
+
+### Method B: GUI
+
+1. **Tools → Options → Environment → Extensions**
 2. In **MCP Server List**, click **Add**
 3. Fill in:
    - **Name**: `universal-vsmcp`
    - **Command**: `dotnet`
-   - **Args**: `run --project C:\path\to\UniversalVSMCP\src\UniversalVSMCP\UniversalVSMCP.csproj -- --stdio`
-4. Save and restart VS
+   - **Args**: `tool run --global universal-vsmcp -- --stdio`
 
-### Method 4: Claude Desktop / Cursor
+---
 
-Add to your `claude_desktop_config.json`:
+## Claude Desktop / Cursor
 
 ```json
 {
   "mcpServers": {
     "vsmcp": {
       "command": "dotnet",
-      "args": ["run", "--project", "C:\\path\\to\\UniversalVSMCP\\src\\UniversalVSMCP\\UniversalVSMCP.csproj", "--", "--stdio"],
+      "args": ["tool", "run", "--global", "universal-vsmcp", "--", "--stdio"],
       "env": {
         "VS_AUTO_DETECT": "true"
       }
@@ -88,20 +96,36 @@ Add to your `claude_desktop_config.json`:
 
 ---
 
-## Features
+## Diagnostic Tools
 
-- **Solution Management**: List projects, open/close solutions
-- **File Operations**: Read, write, search files in VS projects
-- **Build Control**: Build, rebuild, clean solutions and projects
-- **Debug Control**: Start/stop debugging, step through code
-- **Project Management**: Add files, set startup projects, inspect properties
+The server includes built-in diagnostic tools:
+
+| Tool | Purpose |
+|------|---------|
+| `health_check` | Verify server is running and VS connection |
+| `get_server_info` | Get server capabilities and tool list |
+| `get_diagnostic_logs` | Get recent log entries |
+
+### Troubleshooting
+
+```bash
+# Check installation
+dotnet tool list -g
+
+# Run with logging
+universal-vsmcp --stdio --log-file uv.log
+
+# Verify VS is running
+# health_check tool will show connection status
+```
 
 ---
 
 ## Repository
 
 - **Link2VS.skill**: https://github.com/StarsailsClover/Link2VS.skill
-- **Companion Server (UVM)**: https://github.com/StarsailsClover/UniversalVSMCP
+- **Server (UVM)**: https://github.com/StarsailsClover/UniversalVSMCP
+- **NuGet**: https://www.nuget.org/packages/UniversalVSMCP/
 
 ---
 
@@ -115,11 +139,3 @@ Add to your `claude_desktop_config.json`:
 ## License
 
 MIT © StarsailsClover
-
----
-
-## Status
-
-- **NuGet Package**: Published! https://www.nuget.org/packages/UniversalVSMCP/
-- **MCP Registry**: Compatible, requires VS 2026 restart
-- **Source Install**: Fully functional
