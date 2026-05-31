@@ -34,7 +34,7 @@
         "env": {
           "VS_AUTO_DETECT": "true"
         },
-        "description": "Run as installed global .NET tool (requires NuGet package - coming soon)"
+        "description": "Run as installed global .NET tool (recommended)"
       },
       "dotnet_run": {
         "runtime": "dotnet",
@@ -50,7 +50,7 @@
         "env": {
           "VS_AUTO_DETECT": "true"
         },
-        "description": "Run directly from source (recommended until NuGet package is published)"
+        "description": "Run directly from source (for development)"
       },
       "sse_transport": {
         "runtime": "dotnet",
@@ -132,17 +132,16 @@
         "Visual Studio 2026 (18.0) or VS 2022 (17.14+)",
         "Windows 10 or later"
       ],
-      "current_method": "source_install",
+      "current_method": "nuget_install",
       "commands": {
+        "install_global_tool": "dotnet tool install -g UniversalVSMCP",
+        "update_global_tool": "dotnet tool update -g UniversalVSMCP",
+        "uninstall": "dotnet tool uninstall -g UniversalVSMCP",
         "clone": "git clone https://github.com/StarsailsClover/UniversalVSMCP.git",
         "build": "cd UniversalVSMCP/src/UniversalVSMCP && dotnet build",
         "run_stdio": "dotnet run -- --stdio",
         "run_sse": "dotnet run -- --sse --port 6277",
         "run_with_log": "dotnet run -- --stdio --log-file uv.log"
-      },
-      "future_commands": {
-        "install_global_tool": "dotnet tool install -g UniversalVSMCP (coming soon)",
-        "update_global_tool": "dotnet tool update -g UniversalVSMCP (coming soon)"
       }
     },
     "registry_setup": {
@@ -177,8 +176,10 @@
     },
     "known_issues": [
       "SSE transport requires ASP.NET Core (added in v3.1.0)",
-      "NuGet package not yet published - use source install",
       "MCP Registry discovery may require VS restart"
-    ]
+    ],
+    "nuget_package_id": "UniversalVSMCP",
+    "nuget_package_version": "1.0.0",
+    "nuget_package_url": "https://www.nuget.org/packages/UniversalVSMCP/"
   }
 }

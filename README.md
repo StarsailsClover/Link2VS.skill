@@ -18,7 +18,23 @@ Link2VS is an AI Agent skill that enables seamless integration between AI assist
 
 ## Installation
 
-### Method 1: From Source (Recommended - Current)
+### Method 1: NuGet Package (Recommended)
+
+Install the global .NET tool:
+
+```bash
+dotnet tool install -g UniversalVSMCP
+```
+
+Run:
+
+```bash
+universal-vsmcp --stdio
+```
+
+NuGet: https://www.nuget.org/packages/UniversalVSMCP/
+
+### Method 2: From Source
 
 1. Clone the repository:
    ```bash
@@ -104,6 +120,6 @@ MIT © StarsailsClover
 
 ## Status
 
-- **NuGet Package**: Not yet published (coming soon)
+- **NuGet Package**: Published! https://www.nuget.org/packages/UniversalVSMCP/
 - **MCP Registry**: Compatible, requires VS 2026 restart
 - **Source Install**: Fully functional
