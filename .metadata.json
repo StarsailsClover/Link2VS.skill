@@ -1,0 +1,121 @@
+{
+  "name": "link2vs",
+  "version": "1.0.0",
+  "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol. This skill enables AI assistants to control VS through file operations, project management, building, and debugging.",
+  "author": "StarsailsClover",
+  "license": "MIT",
+  "keywords": [
+    "visual-studio",
+    "mcp",
+    "ide",
+    "automation",
+    "dotnet",
+    "csharp",
+    "dte",
+    "envdte"
+  ],
+  "category": "development",
+  "language": "en",
+  "framework": "modelcontextprotocol",
+  "runtime": {
+    "preferred": "uvx",
+    "supported": ["uvx", "npx", "dotnet"]
+  },
+  "requirements": {
+    "python": ">=3.10",
+    "node": ">=18.0.0",
+    "dotnet": ">=8.0.0",
+    "visual_studio": {
+      "vs2026": "18.0",
+      "vs2022": "17.14+"
+    }
+  },
+  "server": {
+    "type": "stdio",
+    "package": "universal-vsmcp",
+    "repository": "https://github.com/StarsailsClover/UniversalVSMCP"
+  },
+  "configuration": {
+    "method": "mcp_json",
+    "templates": {
+      "uvx_stdio": {
+        "command": "uvx",
+        "args": [
+          "git+https://github.com/StarsailsClover/UniversalVSMCP[mcp-server]",
+          "mcp-server",
+          "--stdio"
+        ],
+        "env": {
+          "VS_AUTO_DETECT": "true"
+        }
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "get_solution_projects",
+      "description": "Get all projects in the current VS solution",
+      "category": "solution"
+    },
+    {
+      "name": "get_solution_path",
+      "description": "Get the path of the currently open solution",
+      "category": "solution"
+    },
+    {
+      "name": "open_solution",
+      "description": "Open a .sln file in Visual Studio",
+      "category": "solution"
+    },
+    {
+      "name": "get_project_files",
+      "description": "Get files in a specific project",
+      "category": "project"
+    },
+    {
+      "name": "build_solution",
+      "description": "Build the solution",
+      "category": "build"
+    },
+    {
+      "name": "build_project",
+      "description": "Build a specific project",
+      "category": "build"
+    },
+    {
+      "name": "start_debugging",
+      "description": "Start debugging (F5)",
+      "category": "debug"
+    },
+    {
+      "name": "stop_debugging",
+      "description": "Stop debugging (Shift+F5)",
+      "category": "debug"
+    },
+    {
+      "name": "open_file",
+      "description": "Open a file in VS editor",
+      "category": "file"
+    },
+    {
+      "name": "read_file",
+      "description": "Read file content",
+      "category": "file"
+    },
+    {
+      "name": "write_file",
+      "description": "Write content to a file",
+      "category": "file"
+    }
+  ],
+  "permissions": {
+    "file_system": "read-write",
+    "visual_studio": "full-automation",
+    "network": "outbound-only-for-uvx"
+  },
+  "installation": {
+    "global": "uv tool install universal-vsmcp",
+    "local": "uvx universal-vsmcp",
+    "from_source": "git+https://github.com/StarsailsClover/UniversalVSMCP[mcp-server]"
+  }
+}

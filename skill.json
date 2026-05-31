@@ -1,0 +1,160 @@
+{
+  "name": "link2vs",
+  "version": "2.1.0",
+  "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol (UniversalVSMCP). Native .NET runtime with MCP Registry integration for one-click installation in VS 2026.",
+  "author": "StarsailsClover",
+  "license": "MIT",
+  "repository": "https://github.com/StarsailsClover/UniversalVSMCP",
+  "tags": ["visual-studio", "mcp", "ide", "automation", "dotnet", "csharp", "vs2026", "mcp-registry"],
+  "entry_point": "uvm_bridge",
+  "capabilities": [
+    "read_vs_solution",
+    "execute_build",
+    "debug_control",
+    "file_operations",
+    "project_management",
+    "mcp_registry_install"
+  ],
+  "mcp_config": {
+    "preferred_runtime": "dotnet",
+    "description": "Configuration for AI Agent to connect to VS via UniversalVSMCP. The .NET native version supports MCP Registry discovery in VS 2026.",
+    "configs": {
+      "dotnet_tool": {
+        "runtime": "dotnet",
+        "transport": "stdio",
+        "command": "dotnet",
+        "args": [
+          "tool",
+          "run",
+          "--global",
+          "universal-vsmcp",
+          "--",
+          "--stdio"
+        ],
+        "env": {
+          "VS_AUTO_DETECT": "true"
+        },
+        "description": "Run as installed global .NET tool (recommended for production)"
+      },
+      "dotnet_run": {
+        "runtime": "dotnet",
+        "transport": "stdio",
+        "command": "dotnet",
+        "args": [
+          "run",
+          "--project",
+          "C:\\path\\to\\UniversalVSMCP\\src\\UniversalVSMCP\\UniversalVSMCP.csproj",
+          "--",
+          "--stdio"
+        ],
+        "env": {
+          "VS_AUTO_DETECT": "true"
+        },
+        "description": "Run directly from source (for development)"
+      }
+    },
+    "vs2026_registry_install": {
+      "description": "One-click installation via VS 2026 MCP Registry (requires server.json in repo root)",
+      "note": "VS 2026 MCP Registry feature may require restart. If no response after adding registry URL, restart VS and check Tools > Options > Environment > Extensions > MCP Server List.",
+      "steps": [
+        "1. Open Visual Studio 2026",
+        "2. Go to Tools > Options > Environment > Extensions",
+        "3. In MCP Registry section, click Add",
+        "4. Enter Name: 'UniversalVSMCP Official'",
+        "5. Enter URL: 'https://github.com/StarsailsClover/UniversalVSMCP'",
+        "6. VS scans server.json and shows 'universal-vsmcp'",
+        "7. Click Install - done!"
+      ],
+      "troubleshooting": [
+        "If nothing happens after adding registry:",
+        "1. Restart Visual Studio 2026",
+        "2. Check MCP Server List tab for 'universal-vsmcp'",
+        "3. If still not visible, use Method B (Manual MCP Server) instead",
+        "4. Ensure server.json is at repository root (not in subfolder)"
+      ]
+    },
+    "vs2026_manual_config": {
+      "description": "Manual JSON configuration in VS 2026",
+      "json_template": {
+        "mcpServers": {
+          "universal-vsmcp": {
+            "command": "dotnet",
+            "args": [
+              "tool",
+              "run",
+              "--global",
+              "universal-vsmcp",
+              "--",
+              "--stdio"
+            ],
+            "env": {
+              "VS_AUTO_DETECT": "true"
+            },
+            "transport": "stdio"
+          }
+        }
+      },
+      "gui_path": "Tools > Options > Environment > Extensions > Check 'Edit user settings as JSON'"
+    },
+    "claude_desktop_config": {
+      "description": "Configuration for Claude Desktop / Cursor / Cline",
+      "config": {
+        "mcpServers": {
+          "vsmcp": {
+            "command": "dotnet",
+            "args": ["tool", "run", "--global", "universal-vsmcp", "--", "--stdio"],
+            "env": {
+              "VS_AUTO_DETECT": "true"
+            }
+          }
+        }
+      }
+    }
+  },
+  "skills": {
+    "installation": {
+      "prerequisites": [
+        ".NET 8.0 SDK or later",
+        "Visual Studio 2026 (18.0) or VS 2022 (17.14+)",
+        "Windows 10 or later"
+      ],
+      "commands": {
+        "install_global_tool": "dotnet tool install -g UniversalVSMCP",
+        "update_global_tool": "dotnet tool update -g UniversalVSMCP",
+        "uninstall": "dotnet tool uninstall -g UniversalVSMCP",
+        "run_from_source": "dotnet run --project UniversalVSMCP.csproj -- --stdio",
+        "build": "dotnet build -c Release"
+      }
+    },
+    "registry_setup": {
+      "description": "How to register this MCP server for VS 2026 discovery",
+      "prerequisites": [
+        "GitHub repository must be public",
+        "server.json must exist at repository root",
+        "GitHub release must be created"
+      ],
+      "steps": [
+        "1. Ensure server.json is at repository root",
+        "2. Create GitHub release: git tag -a v1.0.0 && git push origin v1.0.0",
+        "3. In VS 2026: Tools > Options > Environment > Extensions",
+        "4. Add registry: URL = https://github.com/StarsailsClover/UniversalVSMCP",
+        "5. VS scans and lists 'universal-vsmcp'",
+        "6. Click Install to add to MCP Server List"
+      ],
+      "note": "The MCP Registry feature in VS 2026 may be in preview. If it doesn't work, use the manual configuration method."
+    }
+  },
+  "metadata": {
+    "mcp_registry_compatible": true,
+    "server_json_spec": "https://github.com/docker/mcp-community-registry/blob/main/docs/reference/server-json/generic-server-json.md",
+    "vs_compatibility": {
+      "vs2026": "18.0 (recommended)",
+      "vs2022": "17.14+ (limited support)"
+    },
+    "nuget_package": "https://www.nuget.org/packages/UniversalVSMCP/",
+    "runtime": {
+      "preferred": "dotnet",
+      "supported": ["dotnet"]
+    }
+  }
+}
