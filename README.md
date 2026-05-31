@@ -8,16 +8,31 @@
 
 Link2VS is an AI Agent skill that enables seamless integration between AI assistants and Visual Studio. It provides:
 
-- **One-click installation** from MCP Registry in VS 2026
+- **Multiple installation methods** (Registry, Manual, Source)
 - **28 MCP tools** for comprehensive VS automation
 - **Native .NET runtime** (no Python/Node.js dependencies)
 - **Bilingual documentation** (English + Chinese)
+- **SSE and stdio transport** support
 
 ---
 
 ## Installation
 
-### For VS 2026 Users
+### Method 1: From Source (Recommended - Current)
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/StarsailsClover/UniversalVSMCP.git
+   cd UniversalVSMCP/src/UniversalVSMCP
+   ```
+
+2. Build and run:
+   ```bash
+   dotnet build
+   dotnet run -- --stdio
+   ```
+
+### Method 2: VS 2026 MCP Registry
 
 1. Open Visual Studio 2026
 2. Go to **Tools -> Options -> Environment -> Extensions**
@@ -27,7 +42,17 @@ Link2VS is an AI Agent skill that enables seamless integration between AI assist
    - **URL**: `https://github.com/StarsailsClover/UniversalVSMCP`
 5. Select `universal-vsmcp` and click **Install**
 
-### For AI Agent Users (Claude Desktop / Cursor)
+### Method 3: Manual MCP Server
+
+1. **Tools -> Options -> Environment -> Extensions**
+2. In **MCP Server List**, click **Add**
+3. Fill in:
+   - **Name**: `universal-vsmcp`
+   - **Command**: `dotnet`
+   - **Args**: `run --project C:\path\to\UniversalVSMCP\src\UniversalVSMCP\UniversalVSMCP.csproj -- --stdio`
+4. Save and restart VS
+
+### Method 4: Claude Desktop / Cursor
 
 Add to your `claude_desktop_config.json`:
 
@@ -36,7 +61,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "vsmcp": {
       "command": "dotnet",
-      "args": ["tool", "run", "--global", "universal-vsmcp", "--", "--stdio"],
+      "args": ["run", "--project", "C:\\path\\to\\UniversalVSMCP\\src\\UniversalVSMCP\\UniversalVSMCP.csproj", "--", "--stdio"],
       "env": {
         "VS_AUTO_DETECT": "true"
       }
@@ -59,8 +84,8 @@ Add to your `claude_desktop_config.json`:
 
 ## Repository
 
-- **GitHub**: https://github.com/StarsailsClover/Link2VS.skill
-- **Companion Server**: https://github.com/StarsailsClover/UniversalVSMCP
+- **Link2VS.skill**: https://github.com/StarsailsClover/Link2VS.skill
+- **Companion Server (UVM)**: https://github.com/StarsailsClover/UniversalVSMCP
 
 ---
 
@@ -74,3 +99,11 @@ Add to your `claude_desktop_config.json`:
 ## License
 
 MIT © StarsailsClover
+
+---
+
+## Status
+
+- **NuGet Package**: Not yet published (coming soon)
+- **MCP Registry**: Compatible, requires VS 2026 restart
+- **Source Install**: Fully functional

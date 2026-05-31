@@ -1,6 +1,6 @@
 {
   "name": "link2vs",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol (UniversalVSMCP). Native .NET runtime with MCP Registry integration for one-click installation.",
   "author": "StarsailsClover",
   "license": "MIT",
@@ -34,7 +34,7 @@
         "env": {
           "VS_AUTO_DETECT": "true"
         },
-        "description": "Run as installed global .NET tool (recommended for production)"
+        "description": "Run as installed global .NET tool (requires NuGet package - coming soon)"
       },
       "dotnet_run": {
         "runtime": "dotnet",
@@ -50,12 +50,27 @@
         "env": {
           "VS_AUTO_DETECT": "true"
         },
-        "description": "Run directly from source (for development)"
+        "description": "Run directly from source (recommended until NuGet package is published)"
+      },
+      "sse_transport": {
+        "runtime": "dotnet",
+        "transport": "sse",
+        "command": "dotnet",
+        "args": [
+          "run",
+          "--project",
+          "C:\\path\\to\\UniversalVSMCP\\src\\UniversalVSMCP\\UniversalVSMCP.csproj",
+          "--",
+          "--sse",
+          "--port",
+          "6277"
+        ],
+        "description": "Run with SSE transport for web-based clients"
       }
     },
     "vs2026_registry_install": {
-      "description": "One-click installation via VS 2026 MCP Registry",
-      "note": "The MCP Registry feature in VS 2026 may require a restart after adding the registry URL. If no response, restart VS and check MCP Server List.",
+      "description": "One-click installation via VS 2026 MCP Registry (requires server.json in repo root)",
+      "note": "VS 2026 MCP Registry feature may require restart. If no response after adding registry URL, restart VS and check Tools > Options > Environment > Extensions > MCP Server List.",
       "steps": [
         "1. Open Visual Studio 2026",
         "2. Go to Tools > Options > Environment > Extensions",
@@ -80,10 +95,9 @@
           "universal-vsmcp": {
             "command": "dotnet",
             "args": [
-              "tool",
               "run",
-              "--global",
-              "universal-vsmcp",
+              "--project",
+              "C:\\path\\to\\UniversalVSMCP\\src\\UniversalVSMCP\\UniversalVSMCP.csproj",
               "--",
               "--stdio"
             ],
@@ -102,7 +116,7 @@
         "mcpServers": {
           "vsmcp": {
             "command": "dotnet",
-            "args": ["tool", "run", "--global", "universal-vsmcp", "--", "--stdio"],
+            "args": ["run", "--project", "C:\\path\\to\\UniversalVSMCP\\src\\UniversalVSMCP\\UniversalVSMCP.csproj", "--", "--stdio"],
             "env": {
               "VS_AUTO_DETECT": "true"
             }
@@ -118,12 +132,17 @@
         "Visual Studio 2026 (18.0) or VS 2022 (17.14+)",
         "Windows 10 or later"
       ],
+      "current_method": "source_install",
       "commands": {
-        "install_global_tool": "dotnet tool install -g UniversalVSMCP",
-        "update_global_tool": "dotnet tool update -g UniversalVSMCP",
-        "uninstall": "dotnet tool uninstall -g UniversalVSMCP",
-        "run_from_source": "dotnet run --project UniversalVSMCP.csproj -- --stdio",
-        "build": "dotnet build -c Release"
+        "clone": "git clone https://github.com/StarsailsClover/UniversalVSMCP.git",
+        "build": "cd UniversalVSMCP/src/UniversalVSMCP && dotnet build",
+        "run_stdio": "dotnet run -- --stdio",
+        "run_sse": "dotnet run -- --sse --port 6277",
+        "run_with_log": "dotnet run -- --stdio --log-file uv.log"
+      },
+      "future_commands": {
+        "install_global_tool": "dotnet tool install -g UniversalVSMCP (coming soon)",
+        "update_global_tool": "dotnet tool update -g UniversalVSMCP (coming soon)"
       }
     },
     "registry_setup": {
@@ -151,10 +170,15 @@
       "vs2026": "18.0 (recommended)",
       "vs2022": "17.14+ (limited support)"
     },
-    "nuget_package": "https://www.nuget.org/packages/UniversalVSMCP/",
+    "nuget_package": "https://www.nuget.org/packages/UniversalVSMCP/ (not yet published)",
     "runtime": {
       "preferred": "dotnet",
       "supported": ["dotnet"]
-    }
+    },
+    "known_issues": [
+      "SSE transport requires ASP.NET Core (added in v3.1.0)",
+      "NuGet package not yet published - use source install",
+      "MCP Registry discovery may require VS restart"
+    ]
   }
 }
