@@ -1,6 +1,6 @@
 {
   "name": "link2vs",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol. This skill enables AI assistants to control VS through file operations, project management, building, and debugging.",
   "author": "StarsailsClover",
   "license": "MIT",
@@ -12,14 +12,17 @@
     "dotnet",
     "csharp",
     "dte",
-    "envdte"
+    "envdte",
+    "vs2026",
+    "vs2022",
+    "ai-agent"
   ],
   "category": "development",
   "language": "en",
   "framework": "modelcontextprotocol",
   "runtime": {
-    "preferred": "uvx",
-    "supported": ["uvx", "npx", "dotnet"]
+    "preferred": "dotnet",
+    "supported": ["dotnet"]
   },
   "requirements": {
     "python": ">=3.10",
@@ -33,16 +36,20 @@
   "server": {
     "type": "stdio",
     "package": "universal-vsmcp",
-    "repository": "https://github.com/StarsailsClover/UniversalVSMCP"
+    "repository": "https://github.com/StarsailsClover/UniversalVSMCP",
+    "nuget": "https://www.nuget.org/packages/UniversalVSMCP/"
   },
   "configuration": {
     "method": "mcp_json",
     "templates": {
-      "uvx_stdio": {
-        "command": "uvx",
+      "dotnet_tool": {
+        "command": "dotnet",
         "args": [
-          "git+https://github.com/StarsailsClover/UniversalVSMCP[mcp-server]",
-          "mcp-server",
+          "tool",
+          "run",
+          "--global",
+          "universal-vsmcp",
+          "--",
           "--stdio"
         ],
         "env": {
@@ -114,8 +121,8 @@
     "network": "outbound-only-for-uvx"
   },
   "installation": {
-    "global": "uv tool install universal-vsmcp",
-    "local": "uvx universal-vsmcp",
+    "global": "dotnet tool install -g UniversalVSMCP",
+    "local": "universal-vsmcp",
     "from_source": "git+https://github.com/StarsailsClover/UniversalVSMCP[mcp-server]"
   }
 }

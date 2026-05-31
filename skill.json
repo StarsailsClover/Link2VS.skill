@@ -1,11 +1,11 @@
 {
   "name": "link2vs",
-  "version": "2.1.0",
-  "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol (UniversalVSMCP). Native .NET runtime with MCP Registry integration for one-click installation in VS 2026.",
+  "version": "3.0.0",
+  "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol (UniversalVSMCP). Native .NET runtime with MCP Registry integration for one-click installation.",
   "author": "StarsailsClover",
   "license": "MIT",
-  "repository": "https://github.com/StarsailsClover/UniversalVSMCP",
-  "tags": ["visual-studio", "mcp", "ide", "automation", "dotnet", "csharp", "vs2026", "mcp-registry"],
+  "repository": "https://github.com/StarsailsClover/Link2VS.skill",
+  "tags": ["visual-studio", "mcp", "ide", "automation", "dotnet", "csharp", "vs2026", "mcp-registry", "ai-agent"],
   "entry_point": "uvm_bridge",
   "capabilities": [
     "read_vs_solution",
@@ -54,8 +54,8 @@
       }
     },
     "vs2026_registry_install": {
-      "description": "One-click installation via VS 2026 MCP Registry (requires server.json in repo root)",
-      "note": "VS 2026 MCP Registry feature may require restart. If no response after adding registry URL, restart VS and check Tools > Options > Environment > Extensions > MCP Server List.",
+      "description": "One-click installation via VS 2026 MCP Registry",
+      "note": "The MCP Registry feature in VS 2026 may require a restart after adding the registry URL. If no response, restart VS and check MCP Server List.",
       "steps": [
         "1. Open Visual Studio 2026",
         "2. Go to Tools > Options > Environment > Extensions",
