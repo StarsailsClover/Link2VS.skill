@@ -1,6 +1,6 @@
 # Link2VS Skill - AI Agent to Visual Studio Bridge
 
-**Connect AI Agents (Claude, Cursor, Cline) to Visual Studio 2026/2022 via MCP Protocol.**
+**Connect AI Agents (Claude, Cursor, Cline) and VS 2026 MCP Manager to Visual Studio 2026/2022 via MCP Protocol.**
 
 ---
 
@@ -12,13 +12,7 @@
 dotnet tool install -g UniversalVSMCP
 ```
 
-Run:
-
-```bash
-universal-vsmcp --stdio
-```
-
-Verify:
+Verify installation:
 
 ```bash
 universal-vsmcp --help
@@ -31,6 +25,7 @@ universal-vsmcp --help
 ## Features
 
 - **30 MCP Tools** for comprehensive VS automation
+- **Dual Transport**: stdio (for AI Agents) + HTTP/SSE (for VS 2026)
 - **Native .NET runtime** (no Python/Node.js dependencies)
 - **Built-in diagnostics** for troubleshooting
 - **Localhost support** for development
@@ -38,43 +33,36 @@ universal-vsmcp --help
 
 ---
 
-## VS 2026 Configuration
+## VS 2026 Configuration (HTTP/SSE - Recommended)
 
-### Method A: Direct JSON (Recommended)
+**Method A: URL Configuration** (VS 2026 MCP Manager only supports URL)
 
-1. Open **Tools → Options → Environment → Extensions**
-2. Check **"Edit user settings as JSON"**
-3. Paste:
+1. Open command line, start HTTP server:
+
+```bash
+universal-vsmcp --http 5000
+```
+
+2. In VS 2026, open **Tools → Options → Environment → Extensions → MCP Servers**
+3. Click **Add**
+4. Fill in:
+   - **Name**: `Universal VS MCP`
+   - **URL**: `http://localhost:5000/sse`
+   - **Transport**: `sse`
+
+**Method B: Direct JSON (if editing settings JSON)**
 
 ```json
 {
   "mcpServers": {
     "universal-vsmcp": {
-      "command": "dotnet",
-      "args": [
-        "tool",
-        "run",
-        "--global",
-        "universal-vsmcp",
-        "--",
-        "--stdio"
-      ],
-      "env": {
-        "VS_AUTO_DETECT": "true"
-      }
+      "name": "Universal VS MCP",
+      "url": "http://localhost:5000/sse",
+      "transport": "sse"
     }
   }
 }
 ```
-
-### Method B: GUI
-
-1. **Tools → Options → Environment → Extensions**
-2. In **MCP Server List**, click **Add**
-3. Fill in:
-   - **Name**: `universal-vsmcp`
-   - **Command**: `dotnet`
-   - **Args**: `tool run --global universal-vsmcp -- --stdio`
 
 ---
 

@@ -1,11 +1,12 @@
 {
   "name": "link2vs",
-  "version": "26.0.0",
-  "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol. This skill enables AI assistants to control VS through file operations, project management, building, and debugging.",
+  "version": "26.0.2",
+  "description": "Connect AI Agent to Visual Studio 2026/2022 and VS Code via MCP Protocol. This skill enables AI assistants to control VS through file operations, project management, building, and debugging. Supports hybrid architecture with VS Code Extension.",
   "author": "StarsailsClover",
   "license": "MIT",
   "keywords": [
     "visual-studio",
+    "vscode",
     "mcp",
     "ide",
     "automation",
@@ -15,7 +16,8 @@
     "envdte",
     "vs2026",
     "vs2022",
-    "ai-agent"
+    "ai-agent",
+    "hybrid-architecture"
   ],
   "category": "development",
   "language": "en",

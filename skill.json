@@ -1,11 +1,11 @@
 {
   "name": "link2vs",
-  "version": "26.0.0",
-  "description": "Connect AI Agent to Visual Studio 2026/2022 via MCP Protocol (UniversalVSMCP). Native .NET runtime with unified installation and diagnostic tools.",
+  "version": "26.0.2",
+  "description": "Connect AI Agent to Visual Studio 2026/2022 and VS Code via MCP Protocol (UniversalVSMCP). Native .NET runtime with unified installation, diagnostic tools, and hybrid VS Code Extension architecture.",
   "author": "StarsailsClover",
   "license": "MIT",
   "repository": "https://github.com/StarsailsClover/Link2VS.skill",
-  "tags": ["visual-studio", "mcp", "ide", "automation", "dotnet", "csharp", "vs2026", "ai-agent"],
+  "tags": ["visual-studio", "vscode", "mcp", "ide", "automation", "dotnet", "csharp", "vs2026", "ai-agent", "hybrid-architecture"],
   "entry_point": "uvm_bridge",
   "capabilities": [
     "read_vs_solution",
