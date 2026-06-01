@@ -1,7 +1,7 @@
 {
   "name": "link2vs",
-  "version": "26.0.2",
-  "description": "Connect AI Agent to Visual Studio 2026/2022 and VS Code via MCP Protocol (UniversalVSMCP). Native .NET runtime with unified installation, diagnostic tools, and hybrid VS Code Extension architecture.",
+  "version": "26.0.3",
+  "description": "Connect AI Agent to Visual Studio 2026/2022 and VS Code via MCP Protocol (UniversalVSMCP). Native .NET runtime with unified installation, security framework, and hybrid VS Code Extension architecture.",
   "author": "StarsailsClover",
   "license": "MIT",
   "repository": "https://github.com/StarsailsClover/Link2VS.skill",
