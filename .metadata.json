@@ -1,9 +1,15 @@
 {
-  "name": "link2vs",
+  "id": "Link2VS.skill",
+  "name": "Link2VS",
   "version": "26.0.3",
-  "description": "Connect AI Agent to Visual Studio 2026/2022 and VS Code via MCP Protocol. This skill enables AI assistants to control VS through file operations, project management, building, and debugging. Supports hybrid architecture with VS Code Extension.",
+  "description": "Connect AI Agent to Visual Studio 2026/2022 and VS Code via MCP Protocol. Unified architecture with IIdeAdapter, multi-IDE support (VS + VS Code), and security framework.",
   "author": "StarsailsClover",
   "license": "MIT",
+  "homepage": "https://github.com/StarsailsClover/Link2VS.skill",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StarsailsClover/Link2VS.skill"
+  },
   "keywords": [
     "visual-studio",
     "vscode",
@@ -17,114 +23,43 @@
     "vs2026",
     "vs2022",
     "ai-agent",
-    "hybrid-architecture"
+    "unified-architecture",
+    "multi-ide",
+    "iideadapter"
   ],
   "category": "development",
-  "language": "en",
-  "framework": "modelcontextprotocol",
-  "runtime": {
-    "preferred": "dotnet",
-    "supported": ["dotnet"]
-  },
-  "requirements": {
-    "python": ">=3.10",
-    "node": ">=18.0.0",
-    "dotnet": ">=8.0.0",
-    "visual_studio": {
-      "vs2026": "18.0",
-      "vs2022": "17.14+"
-    }
-  },
-  "server": {
-    "type": "stdio",
-    "package": "universal-vsmcp",
-    "repository": "https://github.com/StarsailsClover/UniversalVSMCP",
-    "nuget": "https://www.nuget.org/packages/UniversalVSMCP/"
-  },
-  "configuration": {
-    "method": "mcp_json",
-    "templates": {
-      "dotnet_tool": {
-        "command": "dotnet",
-        "args": [
-          "tool",
-          "run",
-          "--global",
-          "universal-vsmcp",
-          "--",
-          "--stdio"
-        ],
-        "env": {
-          "VS_AUTO_DETECT": "true"
-        }
-      }
-    }
-  },
-  "tools": [
-    {
-      "name": "get_solution_projects",
-      "description": "Get all projects in the current VS solution",
-      "category": "solution"
-    },
-    {
-      "name": "get_solution_path",
-      "description": "Get the path of the currently open solution",
-      "category": "solution"
-    },
-    {
-      "name": "open_solution",
-      "description": "Open a .sln file in Visual Studio",
-      "category": "solution"
-    },
-    {
-      "name": "get_project_files",
-      "description": "Get files in a specific project",
-      "category": "project"
-    },
-    {
-      "name": "build_solution",
-      "description": "Build the solution",
-      "category": "build"
-    },
-    {
-      "name": "build_project",
-      "description": "Build a specific project",
-      "category": "build"
-    },
-    {
-      "name": "start_debugging",
-      "description": "Start debugging (F5)",
-      "category": "debug"
-    },
-    {
-      "name": "stop_debugging",
-      "description": "Stop debugging (Shift+F5)",
-      "category": "debug"
-    },
-    {
-      "name": "open_file",
-      "description": "Open a file in VS editor",
-      "category": "file"
-    },
-    {
-      "name": "read_file",
-      "description": "Read file content",
-      "category": "file"
-    },
-    {
-      "name": "write_file",
-      "description": "Write content to a file",
-      "category": "file"
-    }
+  "tags": [
+    "visual-studio",
+    "vscode",
+    "mcp",
+    "ide",
+    "automation",
+    "dotnet",
+    "unified-architecture"
   ],
-  "permissions": {
-    "file_system": "read-write",
-    "visual_studio": "full-automation",
-    "network": "outbound-only-for-uvx"
+  "requirements": {
+    "os": [
+      "windows"
+    ],
+    "visualStudio": {
+      "vs2026": ">=18.0",
+      "vs2022": ">=17.14"
+    },
+    "vsCode": ">=1.90.0"
   },
-  "installation": {
-    "global": "dotnet tool install -g UniversalVSMCP",
-    "local": "universal-vsmcp",
-    "from_source": "git+https://github.com/StarsailsClover/UniversalVSMCP[mcp-server]"
-  }
+  "dependencies": {
+    "UniversalVSMCP": ">=26.0.3"
+  },
+  "changelog": [
+    {
+      "version": "26.0.3",
+      "date": "2026-06-01",
+      "changes": [
+        "Sync with UniversalVSMCP v26.0.3",
+        "Add Unified Architecture documentation",
+        "Add multi-IDE support (VS + VS Code)",
+        "Update IIdeAdapter interface documentation"
+      ]
+    }
+  ]
 }
