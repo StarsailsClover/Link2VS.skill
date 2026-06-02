@@ -1,7 +1,7 @@
 {
   "id": "Link2VS.skill",
   "name": "Link2VS",
-  "version": "26.0.3",
+  "version": "26.2.0-rc1",
   "description": "Connect AI Agent to Visual Studio 2026/2022 and VS Code via MCP Protocol. Unified architecture with IIdeAdapter, multi-IDE support (VS + VS Code), and security framework.",
   "author": "StarsailsClover",
   "license": "MIT",
