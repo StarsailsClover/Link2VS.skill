@@ -2,6 +2,25 @@
 
 All notable changes to the Link2VS.skill project will be documented in this file.
 
+## [26.0.3] - 2026-06-01
+
+### Added
+- **Phase 4-5: VS Code Extension HTTP Server**
+  - Extension acts as MCP Server
+  - HTTP communication between UVM and VS Code
+  - Native VS Code API integration
+  - ExtensionHttpServer implementation
+  - Auto-start server on activation
+- Multi-IDE support completed
+  - Visual Studio 2022/2026 via COM/DTE
+  - VS Code via Extension API with HTTP server
+  - Smart routing between IDEs
+
+### Changed
+- Version sync with UniversalVSMCP v26.0.3
+- Documentation updated for Extension Server
+- Keywords updated: "vscode-extension-server", "http-server"
+
 ## [26.0.2] - 2026-05-31
 
 ### Added
