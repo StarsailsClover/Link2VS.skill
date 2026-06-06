@@ -1,0 +1,23 @@
+# Link2VS Suite - LVS .gitignore
+# RC3 Pre-Release Cleanup
+
+## Local development
+.vscode/
+.idea/
+*.local
+
+## Logs
+*.log
+logs/
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Release packages
+*.zip
+*.tar.gz
+release/
+
+## Local config
+.local/
